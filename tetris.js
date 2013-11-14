@@ -44,10 +44,15 @@ function nextFrame(){
 	}
 }
 
-function writePiece(){
-	fallingPiecePos = shapes[fallingPiece - 1];
+ function writePiece(){
+		//obtain a copy of the object which represents the "fallingPiece"s shape
+		//(in order to update "fallingPiecePos" without updating "shapes")
+	var copy = JSON.parse( JSON.stringify( shapes[ fallingPiece - 1 ] ) );
+		//assign the copy to a variable
+	fallingPiecePos = copy;
 	for ( i = 0; i < 4; i++ ) {
-		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
+			//and write the positions into "board" for rendering
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece; 
 	}
 }
 
@@ -73,22 +78,19 @@ function dropByOne(){
 	//check if piece is settled
 function nothingIsBelow() {
 
-		//check if square below is actually itself
+		//check if square below is actually part of the piece itself
 	function selfCheck(i){
-		if(fallingPiecePos.indexOf({
-			y : fallingPiecePos[i].y + 1,
-			x : fallingPiecePos[i].x
-		}) < 0 ){ 
-			return false; 
-		} else {
-			return true;
+		for( var j = 0; j < fallingPiecePos.length; j++ ){
+			if ( fallingPiecePos[j].y == fallingPiecePos[i].y + 1 && fallingPiecePos[j].x == fallingPiecePos[i].x ){
+				return true;
+			}
 		}
+		return false;
 	}
-	
 		//loop through the four squares that make up the falling piece
-	for ( i = 0; i < 4; i++ ) {
+	for ( var i = 0; i < 4; i++ ) {
 			//check if square is resting on something			***other then itself***     or has hit the bottom
-		if( ( ( fallingPiecePos[i].y + 1 ) > ( ROWS - 1 ) ) || ( !board[ fallingPiecePos[i].y + 1 ][ fallingPiecePos[i].x ] && selfCheck(i) ) ){
+		if( ( ( fallingPiecePos[i].y + 1 ) > ( ROWS - 1 ) ) || ( board[ fallingPiecePos[i].y + 1 ][ fallingPiecePos[i].x ] && !selfCheck(i) ) ){
 			return false;
 		}
 	}
@@ -111,9 +113,7 @@ function findFullLines( list ){
 		for( j = 0; j < board[ temp/* list[i] */ ].length; j++ ){
 			if( !board[ temp/* list[i]  */][j] ){
 				list[i] = false;
-				/***********************
-				*   continue;/break;   *
-				***********************/
+				break;
 			}
 		}
 	}
