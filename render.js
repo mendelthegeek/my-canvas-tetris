@@ -4,11 +4,10 @@ var W = 300, H = 600;
 var BLOCK_W = W / COLS, BLOCK_H = H / ROWS;
 
 function drawBlock( x, y ) {
-	ctx.fillRect( BLOCK_W * x, BLOCK_H * y, BLOCK_W , BLOCK_H );
+	ctx.fillRect( BLOCK_W * x, BLOCK_H * y, BLOCK_W -1 , BLOCK_H -1 );
 }
 
 function render() {
-	//alert(board);
 	ctx.fillStyle = "cyan";
 	ctx.fillRect( 0, 0, W, H );
 
@@ -20,10 +19,6 @@ function render() {
 			}
 		}
 	}
-	
-	nextFrame();
-setTimeout( render, 100 );
 }
 
-start();
-render();
+setInterval( render, 30 );

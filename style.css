@@ -2,4 +2,5 @@ canvas {
     display: block;
     margin: auto;
     border: 1px solid black;
+    border: 10px #000 double;
 }

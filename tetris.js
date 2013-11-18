@@ -1,4 +1,5 @@
 var falling,fallingPiece,nextPiece,fallingPiecePos;
+var timeoutID;
 var colors = [
     'blue', 'orange', 'brown', 'yellow', 'red', 'green', 'purple'
 ];
@@ -26,6 +27,7 @@ function start(){
 	nextPiece = newRandomPiece();
 	newPiece();
 	writePiece();
+	nextFrame();
 }
 
 function newRandomPiece(){
@@ -34,17 +36,16 @@ function newRandomPiece(){
 }
 
 function nextFrame(){
-	if( falling ){
-		dropByOne();
-		finishedFalling();
-	} else {
+	falling = moveByOne(1,0);
+	if( !falling ){
 		findFullLines( makeList() );
 		newPiece();
 		writePiece();
 	}
+	timeoutID = setTimeout( nextFrame, 300 );
 }
 
- function writePiece(){
+function writePiece(){
 		//obtain a copy of the object which represents the "fallingPiece"s shape
 		//(in order to update "fallingPiecePos" without updating "shapes")
 	var copy = JSON.parse( JSON.stringify( shapes[ fallingPiece - 1 ] ) );
@@ -56,45 +57,91 @@ function nextFrame(){
 	}
 }
 
-function finishedFalling(){
-		//check if piece has finished falling
-	if ( !nothingIsBelow() ) {
-			//if yes, tell the program so
-		falling = false;
-	}
-}
 	//drop the falling piece by one space
-function dropByOne(){
+/*function moveByOne(y,x){
 		//loop through the four squares that make up the piece
-	for ( i = 3; i > -1; i-- ) {
+	for ( i = 0; i < 4; i++ ) {
 			//empty old spot of piece
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
-			//drop position place-holder by one row
-		fallingPiecePos[i].y++;
+			//change position place-holder to new value
+		fallingPiecePos[i].y += y;
+		fallingPiecePos[i].x += x;
+	}
+		//in two separate loops to avoid overwriting issue 
+	for ( i = 0; i < 4; i++ ) {
 			//add square to new spot
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
 	}
+	render();
 }
 	//check if piece is settled
-function nothingIsBelow() {
+function validMove(y,x) {
 
-		//check if square below is actually part of the piece itself
+	var copy = JSON.parse( JSON.stringify(fallingPiecePos));
+		
+		
+	for ( var i = 0; i < 4; i++ ) {
+		copy[i].y += y;
+		copy[i].x += x;
+		if( typeof board[ copy[i].y ] == 'undefined' || typeof board[ copy[i].y][ copy[i].x ] == 'undefined' ) {
+			return false;
+		}
+	}
+		//loop through the four squares that make up the falling piece
+	for ( i = 0; i < 4; i++ ) {
+			//check if square piece is moving to is occupied by something other then itself
+		if( board[ copy[i].y ][ copy[i].x ] && !selfCheck(i) ){
+			return false;
+		}
+	}
+		
+	moveByOne(y,x);
+	falling = true;
+	return true;
+	
+			//check if occupied square is actually part of the piece itself
 	function selfCheck(i){
-		for( var j = 0; j < fallingPiecePos.length; j++ ){
-			if ( fallingPiecePos[j].y == fallingPiecePos[i].y + 1 && fallingPiecePos[j].x == fallingPiecePos[i].x ){
+		for( var j = 0; j < 4; j++ ){
+			if ( fallingPiecePos[j].y == copy[i].y && fallingPiecePos[j].x == copy[i].x ){
 				return true;
 			}
 		}
 		return false;
 	}
-		//loop through the four squares that make up the falling piece
-	for ( var i = 0; i < 4; i++ ) {
-			//check if square is resting on something			***other then itself***     or has hit the bottom
-		if( ( ( fallingPiecePos[i].y + 1 ) > ( ROWS - 1 ) ) || ( board[ fallingPiecePos[i].y + 1 ][ fallingPiecePos[i].x ] && !selfCheck(i) ) ){
+}*/
+
+function validMove(copy) {
+
+	for( var i = 0; i < 4; i++ ){
+		if( typeof board[ copy[i].y ] == 'undefined' || typeof board[ copy[i].y][ copy[i].x ] == 'undefined' || board[ copy[i].y][ copy[i].x ] ) {
 			return false;
 		}
 	}
-	return true;
+	
+	fallingPiecePos = copy;
+	falling = true;
+}	
+	//drop the falling piece by one space
+function moveByOne(y,x){
+
+	var copy = JSON.parse( JSON.stringify(fallingPiecePos));
+		//loop through the four squares that make up the piece
+	for ( i = 0; i < 4; i++ ) {
+			//empty old spot of piece
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
+			//change position place-holder to new value
+		copy[i].y += y;
+		copy[i].x += x;
+	}
+	
+	validMove(copy);
+	
+	for ( i = 0; i < 4; i++ ) {
+			//add square to new spot
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
+	}
+	
+	return (fallingPiecePos == copy);
 }
 
 function makeList(){
@@ -126,17 +173,161 @@ function clearFullLines( list ){
 			for( j = 0; j < board[ list[i] ].length; j++ ){
 				board[ list[i] ][j] = 0;
 			}
+			dropLinesByOne(list[i]);
 		}
 	}
+}
+
+function dropLinesByOne( startingPoint ){
+	for( var i = startingPoint; i > 0; i-- ){
+		for( var j = 0; j < COLS; j++ ){
+			board[i][j] = board[i-1][j];
+			board[i-1][j] = 0;
+		}
+	}
+	render();
+}
+
+function keyPress( key ){
+	render();
+	switch(key){
+		case "right":
+			moveByOne(0,1);
+		break;
+		case "left":
+			moveByOne(0,-1);
+		break;
+		case "down":
+			moveByOne(1,0);
+		break;
+		case "up":
+			rotate();
+		break;
+	}
+	render();
+}
+
+start();
+render();
+
+
+	//figure this one out another time
+function rotate(){
+	window.clearTimeout(timeoutID);
+	k = 0;
+	yList = [];
+	xList = [];
+	oldBlock = [];
+	newBlock = [];
+	tryThis = [];
+	for( var i = 0; i < 4; i++ ){
+		if( yList.indexOf( fallingPiecePos[i].y ) < 0 )
+			{ yList.push(fallingPiecePos[i].y) }
+		if( xList.indexOf( fallingPiecePos[i].x ) < 0 )
+			{ xList.push(fallingPiecePos[i].x) }
+	}
+
+	yList.sort();
+	xList.sort();
+	
+	for( i = 0; i < yList.length; i++){
+	oldBlock[i] = [];
+		for( j = 0; j < xList.length; j++){
+			oldBlock[i][j] = checkSpot(yList[i],xList[j])?1:0;
+		}
+	}
+	
+	for( i = 0; i < xList.length; i++){
+	newBlock[i] = [];
+		for( j = 0; j < yList.length; j++){
+			newBlock[i][j] = oldBlock[ yList.length - ( j + 1 ) ][i];
+		}
+	}
+	
+	console.log(newBlock);
+	
+	for( i = 0; i < newBlock.length; i++){
+		for( j = 0; j < newBlock[i].length; j++){
+			if(newBlock[i][j]){
+				tryThis[k] = {};
+				tryThis[k].y = yList[0] + i;
+				tryThis[k].x = xList[0] + j;
+				k++;
+			}
+		}
+	}
+	
+	for ( i = 0; i < 4; i++ ) {
+			//empty old spot of piece
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
+	}
+	
+	validMove(tryThis);
+	
+	for ( i = 0; i < 4; i++ ) {
+			//add square to new spot
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
+	}
+	
+	function checkSpot(y,x){
+		for( var i = 0; i < 4; i++ ){
+			if ( fallingPiecePos[i].y == y && fallingPiecePos[i].x == x ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	nextFrame();
 }
 
 
 
 
-	//figure this one out another time
-/********************
-* function rotate() *
-*  //end with this  *
-* nothingIsBelow()? *
-*  falling = true:  *
-********************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ /*validMove()?
+  falling = true*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
