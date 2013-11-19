@@ -211,9 +211,7 @@ start();
 render();
 
 
-	//figure this one out another time
 function rotate(){
-	window.clearTimeout(timeoutID);
 	k = 0;
 	yList = [];
 	xList = [];
@@ -226,9 +224,8 @@ function rotate(){
 		if( xList.indexOf( fallingPiecePos[i].x ) < 0 )
 			{ xList.push(fallingPiecePos[i].x) }
 	}
-
-	yList.sort();
-	xList.sort();
+	yList.sort(function(a,b){return a-b;});
+	xList.sort(function(a,b){return a-b;});
 	
 	for( i = 0; i < yList.length; i++){
 	oldBlock[i] = [];
@@ -243,8 +240,6 @@ function rotate(){
 			newBlock[i][j] = oldBlock[ yList.length - ( j + 1 ) ][i];
 		}
 	}
-	
-	console.log(newBlock);
 	
 	for( i = 0; i < newBlock.length; i++){
 		for( j = 0; j < newBlock[i].length; j++){
@@ -277,57 +272,4 @@ function rotate(){
 		}
 		return false;
 	}
-	
-	nextFrame();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- /*validMove()?
-  falling = true*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
