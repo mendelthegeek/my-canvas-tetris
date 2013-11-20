@@ -57,59 +57,6 @@ function writePiece(){
 	}
 }
 
-	//drop the falling piece by one space
-/*function moveByOne(y,x){
-		//loop through the four squares that make up the piece
-	for ( i = 0; i < 4; i++ ) {
-			//empty old spot of piece
-		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
-			//change position place-holder to new value
-		fallingPiecePos[i].y += y;
-		fallingPiecePos[i].x += x;
-	}
-		//in two separate loops to avoid overwriting issue 
-	for ( i = 0; i < 4; i++ ) {
-			//add square to new spot
-		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
-	}
-	render();
-}
-	//check if piece is settled
-function validMove(y,x) {
-
-	var copy = JSON.parse( JSON.stringify(fallingPiecePos));
-		
-		
-	for ( var i = 0; i < 4; i++ ) {
-		copy[i].y += y;
-		copy[i].x += x;
-		if( typeof board[ copy[i].y ] == 'undefined' || typeof board[ copy[i].y][ copy[i].x ] == 'undefined' ) {
-			return false;
-		}
-	}
-		//loop through the four squares that make up the falling piece
-	for ( i = 0; i < 4; i++ ) {
-			//check if square piece is moving to is occupied by something other then itself
-		if( board[ copy[i].y ][ copy[i].x ] && !selfCheck(i) ){
-			return false;
-		}
-	}
-		
-	moveByOne(y,x);
-	falling = true;
-	return true;
-	
-			//check if occupied square is actually part of the piece itself
-	function selfCheck(i){
-		for( var j = 0; j < 4; j++ ){
-			if ( fallingPiecePos[j].y == copy[i].y && fallingPiecePos[j].x == copy[i].x ){
-				return true;
-			}
-		}
-		return false;
-	}
-}*/
-
 function validMove(copy) {
 
 	for( var i = 0; i < 4; i++ ){
