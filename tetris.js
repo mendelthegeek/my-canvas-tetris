@@ -267,7 +267,7 @@ function rotate() {
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
 	}
 		//check if rotated piece is in a valid position
-	validMove();
+	validMove(tryThis);
 		//loop through the boxes that make up the piece
 	for ( i = 0; i < fallingPiecePos.length; i++ ) {
 			//add square to new spot
