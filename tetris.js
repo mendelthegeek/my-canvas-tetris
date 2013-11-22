@@ -1,8 +1,14 @@
-var falling,fallingPiece,nextPiece,fallingPiecePos;
-var timeoutID;
+	//variables to keep track of falling piece status, type, and position
+var falling,fallingPiece,fallingPiecePos;
+	//exactly what it says
+var nextPiece;
+	//variable to make pausing possible if needed
+var nextFrameTimeout;
+	//array to assign each piece its colour (based on shape)
 var colors = [
     'blue', 'orange', 'brown', 'yellow', 'red', 'green', 'purple'
 ];
+	//starting shapes for the pieces
 var shapes = [
 	[{y:0,x:4},{y:0,x:5},{y:0,x:6},{y:0,x:7}],
 	[{y:0,x:4},{y:0,x:5},{y:0,x:6},{y:1,x:4}],
@@ -12,211 +18,273 @@ var shapes = [
 	[{y:0,x:4},{y:0,x:5},{y:1,x:3},{y:1,x:4}],
 	[{y:0,x:4},{y:0,x:5},{y:1,x:5},{y:1,x:6}]
 ];
-
 	//make the next piece start falling
-function newPiece(){
+function newPiece() {
 		//replace "fallingPiece"
 	fallingPiece = nextPiece;
-		//the piece will now start falling
+		//tell program that piece is ready for deployment
 	falling = true;
 		//find a new piece to appear as "nextPiece"
 	nextPiece = newRandomPiece();
 }
-
-function start(){
+	//get the game stared
+function start() {
+		//assign a value to "nextPiece"
 	nextPiece = newRandomPiece();
+		//use said piece as "fallingPiece"
 	newPiece();
+		//assign the shape, colour, and position to display as "falling piece"
 	writePiece();
+		//get the game stared
 	nextFrame();
 }
-
-function newRandomPiece(){
+	//get a new random piece
+function newRandomPiece() {
 		//find a random value 1-7 (7 types of pieces)
 	return Math.ceil(Math.random() * 7);
 }
-
-function nextFrame(){
+	//continue on with the game
+function nextFrame() {
+		//drop by one if possible
 	falling = moveByOne(1,0);
-	if( !falling ){
+		//and if not move to next piece
+	if( !falling ) {
+			//clear finished lines
 		findFullLines( makeList() );
+			//reassign "fallingPiece"
 		newPiece();
+			//assign the shape, colour, and position to display as "falling piece"
 		writePiece();
 	}
-	timeoutID = setTimeout( nextFrame, 300 );
+		//set the time-out for the next frame
+	nextFrameTimeout = setTimeout( nextFrame, 300 );
 }
-
-function writePiece(){
-		//obtain a copy of the object which represents the "fallingPiece"s shape
-		//(in order to update "fallingPiecePos" without updating "shapes")
+	//write next piece into "board"
+function writePiece() {
+		//obtain a copy of the object which represents "fallingPiece" shape
 	var copy = JSON.parse( JSON.stringify( shapes[ fallingPiece - 1 ] ) );
-		//assign the copy to a variable
+		//assign the copy to a variable in order to keep track of the falling piece
 	fallingPiecePos = copy;
-	for ( i = 0; i < 4; i++ ) {
+		//loop through the boxes that make up the piece
+	for ( i = 0; i < fallingPiecePos.length; i++ ) {
 			//and write the positions into "board" for rendering
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece; 
 	}
 }
-
+	//check if new piece position is valid
 function validMove(copy) {
-
-	for( var i = 0; i < 4; i++ ){
+		//loop through the boxes that make up the piece
+	for( var i = 0; i < fallingPiecePos.length; i++ ) {
+			//check if box is inside the board and in a empty spot
 		if( typeof board[ copy[i].y ] == 'undefined' || typeof board[ copy[i].y][ copy[i].x ] == 'undefined' || board[ copy[i].y][ copy[i].x ] ) {
+				//if not leave now
 			return false;
 		}
 	}
-	
+		//if position is valid make it the new piece position
 	fallingPiecePos = copy;
+		//keep the piece falling
 	falling = true;
 }	
-	//drop the falling piece by one space
-function moveByOne(y,x){
-
+	//move piece by one space
+function moveByOne(y,x) {
+		//obtain a copy of the object which represents "fallingPiece" shape and position
 	var copy = JSON.parse( JSON.stringify(fallingPiecePos));
-		//loop through the four squares that make up the piece
-	for ( i = 0; i < 4; i++ ) {
+		//loop through the boxes that make up the piece
+	for ( i = 0; i < fallingPiecePos.length; i++ ) {
 			//empty old spot of piece
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
 			//change position place-holder to new value
 		copy[i].y += y;
 		copy[i].x += x;
 	}
-	
+		//check if piece can move to new position
 	validMove(copy);
-	
-	for ( i = 0; i < 4; i++ ) {
-			//add square to new spot
+		//loop through the boxes that make up the piece
+	for ( i = 0; i < fallingPiecePos.length; i++ ) {
+			//add square to new spot (if changed)
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
 	}
-	
+		//tell program if piece was moved
 	return (fallingPiecePos == copy);
 }
-
-function makeList(){
+	//create a list of the lines which may have been completed 
+function makeList() {
+		//make a new empty array (in case you don't know JavaScript and are reading this anyway)
 	var list = [];
-	for( i = 0; i < fallingPiecePos.length; i++ ){
-		if( list.indexOf( fallingPiecePos[i].y ) < 0 ){
+		//loop through the boxes that make up the piece
+	for( i = 0; i < fallingPiecePos.length; i++ ) {
+			//if this line hasn't been added to the "list" yet
+		if( list.indexOf( fallingPiecePos[i].y ) < 0 ) {
+				//add it
 			list.push(fallingPiecePos[i].y);
 		}
 	}
+		//sort the list (higher first)
+	list.sort(function(a,b){return b - a; });
+		//send the list back to where its needed
 	return list;
 }
-
-function findFullLines( list ){
-	for( i = 0; i < list.length; i++ ){
+	//check if any lines are completed
+function findFullLines( list ) {
+		//loop through all lines that may have just been completed
+	for( i = 0; i < list.length; i++ ) {
+		//create a temp because of weird error that i still need to figure out
 	temp = list[i];
-		for( j = 0; j < board[ temp/* list[i] */ ].length; j++ ){
-			if( !board[ temp/* list[i]  */][j] ){
+			//loop through all cells of the line
+		for( j = 0; j < board[ temp /* list[i] */  ].length; j++ ) {
+				//check if cell is occupied
+			if( !board[ list[i] ][j] ) {
+					//if not tell program that his line shouldn't be emptied
 				list[i] = false;
+					//and stop checking this line
 				break;
 			}
 		}
 	}
+		//send the full lines to be emptied
 	clearFullLines( list )
 }
-
-function clearFullLines( list ){
-	for( i = 0; i < list.length; i++ ){
-		if( list[i] ){
-			for( j = 0; j < board[ list[i] ].length; j++ ){
+	//clear full lines
+function clearFullLines( list ) {
+		//loop through all full lines
+	for( i = 0; i < list.length; i++ ) {
+			//if this line is full
+		if( list[i] ) {
+				//go through all cells of the line
+			for( j = 0; j < board[ list[i] ].length; j++ ) {
+					//empty the cell
 				board[ list[i] ][j] = 0;
 			}
+				//drop the lines above emptied line
 			dropLinesByOne(list[i]);
 		}
 	}
 }
-
-function dropLinesByOne( startingPoint ){
-	for( var i = startingPoint; i > 0; i-- ){
-		for( var j = 0; j < COLS; j++ ){
+	//drop lines down
+function dropLinesByOne( startingPoint ) {
+		//loop through all lines above "startingPoint"
+	for( var i = startingPoint; i > 0; i-- ) {
+			//loop through all cells of the line
+		for( var j = 0; j < COLS; j++ ) {
+				//fill cell with value of cell above it
 			board[i][j] = board[i-1][j];
+				//empty cell above it
 			board[i-1][j] = 0;
 		}
 	}
+		//re-render board 
 	render();
 }
-
-function keyPress( key ){
-	render();
+	//handle keyPress
+function keyPress( key ) {
+		//handle it based on the key which was pressed
 	switch(key){
 		case "right":
+				//add 1 to the x value
 			moveByOne(0,1);
 		break;
 		case "left":
+				//remove 1 to the x value
 			moveByOne(0,-1);
 		break;
 		case "down":
+				//add 1 to the y value
 			moveByOne(1,0);
 		break;
 		case "up":
+				//rotate piece clockwise
 			rotate();
 		break;
 	}
+		//re-render board
 	render();
 }
-
-start();
-render();
-
-
-function rotate(){
-	k = 0;
+	//rotate piece clockwise
+function rotate() {
+		//array to hold y positions occupied by piece
 	yList = [];
+		//array of how much pizza and soda... jk same thing with x
 	xList = [];
-	oldBlock = [];
-	newBlock = [];
-	tryThis = [];
-	for( var i = 0; i < 4; i++ ){
+		//loop through the boxes that make up the piece
+	for( var i = 0; i < fallingPiecePos.length; i++ ) {
+			//if this y position wasn't added to the array yet
 		if( yList.indexOf( fallingPiecePos[i].y ) < 0 )
+				//add it
 			{ yList.push(fallingPiecePos[i].y) }
+			//same thing...
 		if( xList.indexOf( fallingPiecePos[i].x ) < 0 )
 			{ xList.push(fallingPiecePos[i].x) }
 	}
+		//sort the lists to avoid wrong and weird shapes
 	yList.sort(function(a,b){return a-b;});
 	xList.sort(function(a,b){return a-b;});
-	
-	for( i = 0; i < yList.length; i++){
-	oldBlock[i] = [];
-		for( j = 0; j < xList.length; j++){
+		//2d array to represent current shape of piece
+	oldBlock = [];
+		//loop through the hight of the piece
+	for( i = 0; i < yList.length; i++) {
+			//create a sub-array
+		oldBlock[i] = [];
+			//loop through the width of the piece
+		for( j = 0; j < xList.length; j++) {
+				//if part of the piece is there write a 1
 			oldBlock[i][j] = checkSpot(yList[i],xList[j])?1:0;
 		}
 	}
-	
-	for( i = 0; i < xList.length; i++){
-	newBlock[i] = [];
-		for( j = 0; j < yList.length; j++){
+		//2d array to represent new shape of rotated piece
+	newBlock = [];
+		//loop through the width
+	for( i = 0; i < xList.length; i++) {
+			//create new sub-array
+		newBlock[i] = [];
+			//loop through hieght
+		for( j = 0; j < yList.length; j++) {
+				//here is where the magic happens
 			newBlock[i][j] = oldBlock[ yList.length - ( j + 1 ) ][i];
 		}
 	}
-	
-	for( i = 0; i < newBlock.length; i++){
-		for( j = 0; j < newBlock[i].length; j++){
-			if(newBlock[i][j]){
-				tryThis[k] = {};
-				tryThis[k].y = yList[0] + i;
-				tryThis[k].x = xList[0] + j;
-				k++;
+		//array to fill with new piece position
+	tryThis = [];
+		//index in "tryThis"
+	index = 0;
+		//loop through 2d array with piece shape
+	for( i = 0; i < newBlock.length; i++) {
+		for( j = 0; j < newBlock[i].length; j++) {
+				//if a square is in that spot
+			if(newBlock[i][j]) {
+					//fill with a object representing a position on board
+				tryThis[index ] = {};
+				tryThis[index ].y = yList[0] + i;
+				tryThis[index ].x = xList[0] + j;
+					//indent index
+				index++;
 			}
 		}
 	}
-	
-	for ( i = 0; i < 4; i++ ) {
+		//loop through the boxes that make up the piece
+	for ( i = 0; i < fallingPiecePos.length; i++ ) {
 			//empty old spot of piece
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
 	}
-	
+		//check if rotated piece is in a valid position
 	validMove(tryThis);
-	
-	for ( i = 0; i < 4; i++ ) {
+		//loop through the boxes that make up the piece
+	for ( i = 0; i < fallingPiecePos.length; i++ ) {
 			//add square to new spot
 		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
 	}
-	
-	function checkSpot(y,x){
-		for( var i = 0; i < 4; i++ ){
-			if ( fallingPiecePos[i].y == y && fallingPiecePos[i].x == x ){
+		//check if position x,y contains falling piece
+	function checkSpot(y,x) {
+			//loop through the boxes that make up the piece
+		for( var i = 0; i < fallingPiecePos.length; i++ ) {
+				//check if position x,y contains falling piece
+			if ( fallingPiecePos[i].y == y && fallingPiecePos[i].x == x ) {
 				return true;
 			}
 		}
 		return false;
 	}
 }
+	//get the game started
+start();
+render();
