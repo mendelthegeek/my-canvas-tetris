@@ -30,8 +30,11 @@ function newPiece() {
 	//get the game stared
 function start() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		//initialize "board" array
 	writeBoard();
+=======
+>>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 =======
 >>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 		//assign a value to "nextPiece"
@@ -42,8 +45,11 @@ function start() {
 	writePiece();
 		//get the game stared
 <<<<<<< HEAD
+<<<<<<< HEAD
 	nextFrameTimeout = setTimeout( nextFrame, 300 );
 =======
+=======
+>>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 	nextFrame();
 >>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 }
@@ -130,6 +136,11 @@ function makeList() {
 		}
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		//sort the list (higher first)
+	list.sort(function(a,b){return b - a; });
+>>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 =======
 		//sort the list (higher first)
 	list.sort(function(a,b){return b - a; });
@@ -189,7 +200,10 @@ function dropLinesByOne( startingPoint ) {
 	render();
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 	//handle keyPress
 function keyPress( key ) {
 		//handle it based on the key which was pressed
@@ -214,6 +228,9 @@ function keyPress( key ) {
 		//re-render board
 	render();
 }
+<<<<<<< HEAD
+>>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
+=======
 >>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 	//rotate piece clockwise
 function rotate() {
@@ -302,7 +319,12 @@ function rotate() {
 }
 	//get the game started
 <<<<<<< HEAD
+<<<<<<< HEAD
 start();
+=======
+start();
+render();
+>>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 =======
 start();
 render();
