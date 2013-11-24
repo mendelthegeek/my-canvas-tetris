@@ -11,9 +11,7 @@ document.body.onkeydown = function( e ) {
 	if ( keys[ e.keyCode ] ) {
 		keyPress( keys[ e.keyCode ] )
 		render();
-	} /*else {
-		alert(e.keyCode);
-	}//*/
+	}
 };
 	//handle keyPress
 function keyPress( key ) {
@@ -24,7 +22,7 @@ function keyPress( key ) {
 			moveByOne(0,1);
 		break;
 		case "left":
-				//remove 1 to the x value
+				//remove 1 from the x value
 			moveByOne(0,-1);
 		break;
 		case "down":
@@ -40,21 +38,20 @@ function keyPress( key ) {
 			for(;moveByOne(1,0);){}
 		break;
 		case "p":
-				//hide the board
+				//toggle hidden board
 			hideBoard = !hideBoard;
 				//pause or un-pause
 			if ( nextFrameTimeout ) {
+					//stop piece from falling
 				window.clearTimeout(nextFrameTimeout);
 				nextFrameTimeout = false;
 			} else {
+					//restart the process of the piece falling
 				nextFrameTimeout = setTimeout( nextFrame, 300 );
 			}
 		break;
 		case "escape":
-			window.clearTimeout(nextFrameTimeout);
-			nextPiece = "";
-			board = [];
-			start();
+			newGame();
 		break;
 	}
 }

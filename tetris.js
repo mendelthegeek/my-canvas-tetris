@@ -27,32 +27,6 @@ function newPiece() {
 		//find a new piece to appear as "nextPiece"
 	nextPiece = newRandomPiece();
 }
-	//get the game stared
-function start() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-		//initialize "board" array
-	writeBoard();
-=======
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-=======
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-		//assign a value to "nextPiece"
-	nextPiece = newRandomPiece();
-		//use said piece as "fallingPiece"
-	newPiece();
-		//assign the shape, colour, and position to display as "falling piece"
-	writePiece();
-		//get the game stared
-<<<<<<< HEAD
-<<<<<<< HEAD
-	nextFrameTimeout = setTimeout( nextFrame, 300 );
-=======
-=======
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-	nextFrame();
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-}
 	//get a new random piece
 function newRandomPiece() {
 		//find a random value 1-7 (7 types of pieces)
@@ -199,39 +173,6 @@ function dropLinesByOne( startingPoint ) {
 		//re-render board 
 	render();
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-	//handle keyPress
-function keyPress( key ) {
-		//handle it based on the key which was pressed
-	switch(key){
-		case "right":
-				//add 1 to the x value
-			moveByOne(0,1);
-		break;
-		case "left":
-				//remove 1 to the x value
-			moveByOne(0,-1);
-		break;
-		case "down":
-				//add 1 to the y value
-			moveByOne(1,0);
-		break;
-		case "up":
-				//rotate piece clockwise
-			rotate();
-		break;
-	}
-		//re-render board
-	render();
-}
-<<<<<<< HEAD
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-=======
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 	//rotate piece clockwise
 function rotate() {
 		//array to hold y positions occupied by piece
@@ -317,15 +258,3 @@ function rotate() {
 		return false;
 	}
 }
-	//get the game started
-<<<<<<< HEAD
-<<<<<<< HEAD
-start();
-=======
-start();
-render();
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-=======
-start();
-render();
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d

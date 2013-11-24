@@ -1,21 +1,21 @@
-var canvas = document.getElementsByTagName( 'canvas' )[ 0 ];
+var canvas = document.getElementsById( 'tetris' );
 var ctx = canvas.getContext( '2d' );
-var W = 300, H = 600;
-var BLOCK_W = W / COLS, BLOCK_H = H / ROWS;
+var width = 300, hieght = 600;
+var cellWidth =  width / columns, cellHieght = hieght / rows;
 var hideBoard = false;
 
 function drawBlock( x, y ) {
-	ctx.fillRect( BLOCK_W * x, BLOCK_H * y, BLOCK_W -1 , BLOCK_H -1 );
+	ctx.fillRect( cellWidth * x, cellHieght * y, cellWidth -1 , cellHieght -1 );
 }
 
 function render() {
 	ctx.fillStyle = "cyan";
-	ctx.fillRect( 0, 0, W, H );
+	ctx.fillRect( 0, 0, width, height );
 	
 	if (hideBoard) { return; }
 	
-	for ( var x = 0; x < COLS; ++x ) {
-		for ( var y = 0; y < ROWS; ++y ) {
+	for ( var x = 0; x < columns; ++x ) {
+		for ( var y = 0; y < rows; ++y ) {
 			if ( board[ y ][ x ] ) {
 				ctx.fillStyle = colors[ board[ y ][ x ] - 1 ];
 				drawBlock( x, y );
