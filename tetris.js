@@ -109,16 +109,6 @@ function makeList() {
 			list.push(fallingPiecePos[i].y);
 		}
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-		//sort the list (higher first)
-	list.sort(function(a,b){return b - a; });
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
-=======
-		//sort the list (higher first)
-	list.sort(function(a,b){return b - a; });
->>>>>>> 080c4a3c62e2b49a54b8410644bb72d6846a660d
 		//send the list back to where its needed
 	return list;
 }
