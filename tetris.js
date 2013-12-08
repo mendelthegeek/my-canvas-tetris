@@ -6,7 +6,7 @@ var nextPiece;
 var nextFrameTimeout;
 	//array to assign each piece its colour (based on shape)
 var colors = [
-    'blue', 'orange', 'brown', 'yellow', 'red', 'green', 'purple'
+    'blue', 'orange', 'brown', 'cyan', 'red', 'green', 'purple'
 ];
 	//starting shapes for the pieces
 var shapes = [
@@ -26,6 +26,8 @@ function newPiece() {
 	falling = true;
 		//find a new piece to appear as "nextPiece"
 	nextPiece = newRandomPiece();
+	
+	displayNextPiece();
 }
 	//get a new random piece
 function newRandomPiece() {
@@ -34,6 +36,8 @@ function newRandomPiece() {
 }
 	//continue on with the game
 function nextFrame() {
+		//set the time-out for the next frame
+	nextFrameTimeout = setTimeout( nextFrame, 300 );
 		//drop by one if possible
 	falling = moveByOne(1,0);
 		//and if not move to next piece
@@ -45,8 +49,6 @@ function nextFrame() {
 			//assign the shape, colour, and position to display as "falling piece"
 		writePiece();
 	}
-		//set the time-out for the next frame
-	nextFrameTimeout = setTimeout( nextFrame, 300 );
 }
 	//write next piece into "board"
 function writePiece() {
@@ -153,7 +155,7 @@ function dropLinesByOne( startingPoint ) {
 		//loop through all lines above "startingPoint"
 	for( var i = startingPoint; i > 0; i-- ) {
 			//loop through all cells of the line
-		for( var j = 0; j < COLS; j++ ) {
+		for( var j = 0; j < columns; j++ ) {
 				//fill cell with value of cell above it
 			board[i][j] = board[i-1][j];
 				//empty cell above it
@@ -200,7 +202,7 @@ function rotate() {
 	for( i = 0; i < xList.length; i++) {
 			//create new sub-array
 		newBlock[i] = [];
-			//loop through hieght
+			//loop through height
 		for( j = 0; j < yList.length; j++) {
 				//here is where the magic happens
 			newBlock[i][j] = oldBlock[ yList.length - ( j + 1 ) ][i];
@@ -248,3 +250,29 @@ function rotate() {
 		return false;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

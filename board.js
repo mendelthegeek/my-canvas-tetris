@@ -5,11 +5,11 @@ var board =[];
 	//turn "board" into a 20 * 10 array
 function writeBoard() {
 		//20 rows
-	for ( i = 0; i < ROWS; i++ ){
+	for ( i = 0; i < rows; i++ ){
 			//nested array to represent a row
 		board[i] = [];
 			//10 columns
-		for ( j = 0; j < COLS; j++ ) {
+		for ( j = 0; j < columns; j++ ) {
 				//create cell with falsy value
 			board[i][j] = 0;
 		}
@@ -40,4 +40,3 @@ function newGame() {
 	start();
 }
 	//get the game started
-start();

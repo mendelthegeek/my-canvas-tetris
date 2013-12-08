@@ -1,6 +1,12 @@
-canvas {
-    display: block;
-    margin: auto;
-    border: 1px solid black;
-    border: 10px #000 double;
+#tetris{
+	display: block;
+	margin-left: 500px;
+	border: 10px #000 double;
+	float: left;
+}
+
+#nextPiece{
+	margin-left: 25px;
+	border: 1px solid black;
+	float: left;
 }

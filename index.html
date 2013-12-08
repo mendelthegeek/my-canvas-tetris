@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>HTML5 Tetris</title>
-        <link rel='stylesheet' href='style.css' />
-    </head>
-    <body>
-        <canvas width = '300' height = '600' id = 'tetris'></canvas>
-        <script src='board.js'></script>
-        <script src='display.js'></script>
-        <script src='tetris.js'></script>
-	  <script src='controls.js'></script>
-    </body>
+	<head>
+		<title>HTML5 Tetris</title>
+		<link rel='stylesheet' href='style.css' />
+	</head>
+	<body>
+		<canvas width = '300' height = '600' id = 'tetris'></canvas>
+		<canvas width = '150' height = '120' id = 'nextPiece'></canvas>
+		
+		<script src='board.js'></script>
+		<script src='display.js'></script>
+		<script src='tetris.js'></script>
+		<script src='controls.js'></script>
+		<script>start();</script>
+	</body>
 </html>
