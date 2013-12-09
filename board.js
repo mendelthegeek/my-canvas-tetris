@@ -36,6 +36,8 @@ function newGame() {
 	nextPiece = "";
 		//empty the board
 	board = [];
+	
+	speed, level, lines = 0;
 		//start new game
 	start();
 }

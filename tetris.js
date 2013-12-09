@@ -4,6 +4,10 @@ var falling,fallingPiece,fallingPiecePos;
 var nextPiece;
 	//variable to make pausing possible if needed
 var nextFrameTimeout;
+
+var lines = 0, level = 0;
+
+var speed = 300;
 	//array to assign each piece its colour (based on shape)
 var colors = [
     'blue', 'orange', 'brown', 'cyan', 'red', 'green', 'purple'
@@ -27,7 +31,7 @@ function newPiece() {
 		//find a new piece to appear as "nextPiece"
 	nextPiece = newRandomPiece();
 	
-	displayNextPiece();
+	sideDisplay( id );
 }
 	//get a new random piece
 function newRandomPiece() {
@@ -37,7 +41,7 @@ function newRandomPiece() {
 	//continue on with the game
 function nextFrame() {
 		//set the time-out for the next frame
-	nextFrameTimeout = setTimeout( nextFrame, 300 );
+	nextFrameTimeout = setTimeout( nextFrame, speed + 50 );
 		//drop by one if possible
 	falling = moveByOne(1,0);
 		//and if not move to next piece
@@ -145,6 +149,7 @@ function clearFullLines( list ) {
 					//empty the cell
 				board[ list[i] ][j] = 0;
 			}
+			addToLines();
 				//drop the lines above emptied line
 			dropLinesByOne(list[i]);
 		}
@@ -251,7 +256,18 @@ function rotate() {
 	}
 }
 
+function addToLines() {
+	lines++;
+	if ( lines % 10 == 0 ) {
+		levelUp();
+	}
+}
 
+function levelUp() {
+	level++;
+	//alert( level );
+	speed = (speed / 10) * 9;
+}
 
 
 

@@ -27,16 +27,16 @@ function render() {
 
 setInterval( render, 30 );
 
-function displayNextPiece(){
-	var canvas = document.getElementById( 'nextPiece' );
+function sideDisplay( id, piece ) {
+	var canvas = document.getElementById( id );
 	var ctx = canvas.getContext( '2d' );
 	
 	ctx.fillStyle = "white";
 	ctx.fillRect( 0, 0, cellWidth * 5, cellheight * 4 );
 
-	var copy = JSON.parse( JSON.stringify( shapes[ nextPiece - 1 ] ) );
+	var copy = JSON.parse( JSON.stringify( shapes[ piece - 1 ] ) );
 	
-	ctx.fillStyle = colors[ nextPiece - 1 ];
+	ctx.fillStyle = colors[ piece - 1 ];
 	for ( var i = 0; i < copy.length; i++ ) {
 		drawBlock( copy[i].x - 3 , copy[i].y  + 1, ctx );
 	}
