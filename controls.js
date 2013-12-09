@@ -5,6 +5,7 @@ document.body.onkeydown = function( e ) {
 		40: 'down',
 		38: 'up',
 		32: 'space',
+		16: 'shift',
 		80: 'p',
 		27: 'escape'
 	};
@@ -53,5 +54,30 @@ function keyPress( key ) {
 		case "escape":
 			newGame();
 		break;
+		case 'shift':
+			var temp = fallingPiece;
+			for ( i = 0; i < fallingPiecePos.length; i++ ) {
+				board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = 0;
+			}
+				if ( holdingPiece ) {
+					fallingPiece = holdingPiece;
+					falling = true;
+				} else {
+					newPiece();
+				}
+			writePiece();
+			holdingPiece = temp;
+			sideDisplay( 'holdingPiece', holdingPiece );
+		break;
 	}
 }
+
+
+
+
+
+
+
+
+
+

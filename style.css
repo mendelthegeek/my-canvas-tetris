@@ -1,6 +1,6 @@
 #tetris{
 	display: block;
-	margin-left: 500px;
+	margin-left: 25px;
 	border: 10px #000 double;
 	float: left;
 }
@@ -9,4 +9,10 @@
 	margin-left: 25px;
 	border: 1px solid black;
 	float: left;
+}
+
+#holdingPiece {
+	border: 1px solid black;
+	float: left;
+	margin-left: 300px;
 }

@@ -2,6 +2,8 @@
 var falling,fallingPiece,fallingPiecePos;
 	//exactly what it says
 var nextPiece;
+
+var holdingPiece = false;
 	//variable to make pausing possible if needed
 var nextFrameTimeout;
 
@@ -31,7 +33,7 @@ function newPiece() {
 		//find a new piece to appear as "nextPiece"
 	nextPiece = newRandomPiece();
 	
-	sideDisplay( id );
+	sideDisplay( 'nextPiece', nextPiece );
 }
 	//get a new random piece
 function newRandomPiece() {
