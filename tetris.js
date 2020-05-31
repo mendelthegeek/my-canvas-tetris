@@ -11,7 +11,63 @@ var lines = 0, level = 0;
 
 var speed = 300;
 	//array to assign each piece its colour (based on shape)
-
+var colors = [
+    'blue', 'orange', 'brown', 'cyan', 'red', 'green', 'purple'
+];
+	//starting shapes for the pieces
+var shapes = [
+	[{y:0,x:4},{y:0,x:5},{y:0,x:6},{y:0,x:7}],
+	[{y:0,x:4},{y:0,x:5},{y:0,x:6},{y:1,x:4}],
+	[{y:0,x:4},{y:0,x:5},{y:0,x:6},{y:1,x:5}],
+	[{y:0,x:4},{y:0,x:5},{y:0,x:6},{y:1,x:6}],
+	[{y:0,x:4},{y:0,x:5},{y:1,x:4},{y:1,x:5}],
+	[{y:0,x:4},{y:0,x:5},{y:1,x:3},{y:1,x:4}],
+	[{y:0,x:4},{y:0,x:5},{y:1,x:5},{y:1,x:6}]
+];
+	//make the next piece start falling
+function newPiece() {
+		//replace "fallingPiece"
+	fallingPiece = nextPiece;
+		//tell program that piece is ready for deployment
+	falling = true;
+		//find a new piece to appear as "nextPiece"
+	nextPiece = newRandomPiece();
+	
+	sideDisplay( 'nextPiece', nextPiece );
+}
+	//get a new random piece
+function newRandomPiece() {
+		//find a random value 1-7 (7 types of pieces)
+	return Math.ceil(Math.random() * 7);
+}
+	//continue on with the game
+function nextFrame() {
+		//set the time-out for the next frame
+	nextFrameTimeout = setTimeout( nextFrame, speed + 50 );
+		//drop by one if possible
+	falling = moveByOne(1,0);
+		//and if not move to next piece
+	if( !falling ) {
+			//clear finished lines
+		findFullLines( makeList() );
+			//reassign "fallingPiece"
+		newPiece();
+			//assign the shape, colour, and position to display as "falling piece"
+		writePiece();
+	}
+}
+	//write next piece into "board"
+function writePiece() {
+		//obtain a copy of the object which represents "fallingPiece" shape
+	var copy = JSON.parse( JSON.stringify( shapes[ fallingPiece - 1 ] ) );
+		//assign the copy to a variable in order to keep track of the falling piece
+	fallingPiecePos = copy;
+		//loop through the boxes that make up the piece
+	for ( i = 0; i < fallingPiecePos.length; i++ ) {
+			//and write the positions into "board" for rendering
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece; 
+	}
+}
 	//check if new piece position is valid
 function validMove(copy) {
 		//loop through the boxes that make up the piece
@@ -216,29 +272,25 @@ function levelUp() {
 }
 
 
-	//get the game stared
-function start() {
-		//initialize "board" array
-	writeBoard();
-		//assign a value to "nextPiece"
-	nextPiece = newRandomPiece();
-		//use said piece as "fallingPiece"
-	newPiece();
-		//assign the shape, colour, and position to display as "falling piece"
-	writePiece();
-		//get the game stared
-	nextFrameTimeout = setTimeout( nextFrame, 300 );
-}
-	//reset and restart game
-function newGame() {
-		//stop falling piece
-	window.clearTimeout(nextFrameTimeout);
-		//new pieces
-	nextPiece = "";
-		//empty the board
-	board = [];
-	
-	speed, level, lines = 0;
-		//start new game
-	start();
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
