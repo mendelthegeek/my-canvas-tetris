@@ -71,13 +71,3 @@ function keyPress( key ) {
 		break;
 	}
 }
-
-
-
-
-
-
-
-
-
-
