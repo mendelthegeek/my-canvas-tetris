@@ -1,18 +1,18 @@
-	//initialize columns and rows
-var columns = 10, rows = 20;
-	//this is where the action happens
-var board =[];
-	//turn "board" into a 20 * 10 array
-function writeBoard() {
-		//20 rows
-	for ( i = 0; i < rows; i++ ){
-			//nested array to represent a row
-		board[i] = [];
-			//10 columns
-		for ( j = 0; j < columns; j++ ) {
-				//create cell with falsy value
-			board[i][j] = 0;
-		}
+	
+setInterval( render, 30 );
+
+function sideDisplay( id, piece ) {
+	var canvas = document.getElementById( id );
+	var ctx = canvas.getContext( '2d' );
+	
+	ctx.fillStyle = "white";
+	ctx.fillRect( 0, 0, cellWidth * 5, cellheight * 4 );
+
+	var copy = JSON.parse( JSON.stringify( shapes[ piece - 1 ] ) );
+	
+	ctx.fillStyle = colors[ piece - 1 ];
+	for ( var i = 0; i < copy.length; i++ ) {
+		drawBlock( copy[i].x - 3 , copy[i].y  + 1, ctx );
 	}
 }
 	//get the game stared
