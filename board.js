@@ -1,44 +1,40 @@
-	//initialize columns and rows
-var columns = 10, rows = 20;
-	//this is where the action happens
+
+//initialize 
+var columns = 10, rows = 20; width = 300, height = 600;
+var cellWidth =  width / columns, cellheight = height / rows;
+var hideBoard = false;
+
+function drawBlock(x, y, ctx) {
+	ctx.fillRect (cellWidth * x, cellheight * y, cellWidth -1 , cellheight -1);
+}
+
+
 var board =[];
-	//turn "board" into a 20 * 10 array
+
+//turn "board" into a 20 * 10 array
 function writeBoard() {
-		//20 rows
-	for ( i = 0; i < rows; i++ ){
-			//nested array to represent a row
+
+	for(i = 0; i < rows; i++) {
 		board[i] = [];
-			//10 columns
-		for ( j = 0; j < columns; j++ ) {
-				//create cell with falsy value
+		for(j = 0; j < columns; j++) {
 			board[i][j] = 0;
 		}
 	}
 }
-	//get the game stared
-function start() {
-		//initialize "board" array
-	writeBoard();
-		//assign a value to "nextPiece"
-	nextPiece = newRandomPiece();
-		//use said piece as "fallingPiece"
-	newPiece();
-		//assign the shape, colour, and position to display as "falling piece"
-	writePiece();
-		//get the game stared
-	nextFrameTimeout = setTimeout( nextFrame, 300 );
+
+function render() {
+	var canvas = document.getElementById('tetris');
+	var ctx = canvas.getContext('2d');
+
+	ctx.fillStyle = "white";
+	ctx.fillRect( 0, 0, width, height );
+		
+	for ( var x = 0; x < columns; ++x ) {
+		for ( var y = 0; y < rows; ++y ) {
+			if ( board[ y ][ x ] ) {
+				ctx.fillStyle = colors [board [ y ][ x ] - 1];
+				drawBlock( x, y, ctx );
+			}
+		}
+	}
 }
-	//reset and restart game
-function newGame() {
-		//stop falling piece
-	window.clearTimeout(nextFrameTimeout);
-		//new pieces
-	nextPiece = "";
-		//empty the board
-	board = [];
-	
-	speed, level, lines = 0;
-		//start new game
-	start();
-}
-	//get the game started
