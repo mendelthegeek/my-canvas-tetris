@@ -1,8 +1,21 @@
-var width = 300, height = 600;
+//initialize 
+var columns = 10, rows = 20, width = 300, height = 600;
 var cellWidth =  width / columns, cellheight = height / rows;
 var hideBoard = false;
 var canvas = document.getElementById( 'tetris' );
 var ctx = canvas.getContext( '2d' );
+
+var board =[];
+
+//turn "board" into a 20 * 10 array
+function writeBoard() {
+	for ( i = 0; i < rows; i++ ){
+		board[i] = [];
+			for ( j = 0; j < columns; j++ ) {				
+			board[i][j] = 0;
+		}
+	}
+}
 
 function drawBlock( x, y, ctx ) {
 	ctx.fillRect( cellWidth * x + 1.5, cellheight * y + 1.5, cellWidth -2 , cellheight -2 );
@@ -37,7 +50,7 @@ function render() {
 		}
 	}
 }
-
+	
 setInterval( render, 30 );
 
 function sideDisplay( id, piece ) {
