@@ -5,16 +5,31 @@
 		<link rel='stylesheet' href='style.css' />
 	</head>
 	<body>
-		<canvas width = '150' height = '120' id = 'holdingPiece'></canvas>
+		<div class = 'container'>
+		<div class = 'wrapper' id = 'leftWrapper'>
+			<canvas width = '150' height = '120' id = 'holdingPiece'></canvas>
+			<div id = 'keepScore'>
+				Score: <p id = 'score'>0</p></br>
+				Level: <p id = 'level'>0</p></div>
+		</div>
 		<canvas width = '300' height = '600' id = 'tetris'></canvas>
-		<canvas width = '150' height = '120' id = 'nextPiece'></canvas>
-		<div><ul>
-		<li>controls</li><li>right-right</li><li>left-left</li><li>up-rotate</li>
-		<li>down-faster</li><li>p-pause</li><li>shift-swap</li><li>esc-new game</li>
-		</ul></div>
-		
+		<div class = 'wrapper'>
+			<canvas width = '150' height = '120' id = 'nextPiece'></canvas>
+			<div id = 'controls'>
+			Controls:
+			<ul>
+				<li>right-right</li>
+				<li>left-left</li>
+				<li>up-rotate</li>
+				<li>down-faster</li>
+				<li>p-pause</li>
+				<li>shift-swap</li>
+				<li>esc-new game</li>
+			</ul></div>
+		</div>
+	</div>
+
 		<script src='display.js'></script>
-		<script src='board.js'></script>
 		<script src='tetris.js'></script>
 		<script src='controls.js'></script>
 		<script>start();</script>

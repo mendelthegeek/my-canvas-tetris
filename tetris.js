@@ -20,7 +20,7 @@ function newGame() {
 	nextPiece = "";
 		//empty the board
 	board = [];
-	
+
 	speed, level, lines = 0;
 		//start new game
 	start();
@@ -35,9 +35,8 @@ var holdingPiece = false;
 	//variable to make pausing possible if needed
 var nextFrameTimeout;
 
-var lines = 0, level = 0;
+var lines = 0, level = 0, speed = 0;
 
-var speed = 300;
 	//array to assign each piece its colour (based on shape)
 var colors = [
     'blue', 'orange', 'brown', 'cyan', 'red', 'green', 'purple'
@@ -60,7 +59,7 @@ function newPiece() {
 	falling = true;
 		//find a new piece to appear as "nextPiece"
 	nextPiece = newRandomPiece();
-	
+
 	sideDisplay( 'nextPiece', nextPiece );
 }
 	//get a new random piece
@@ -71,7 +70,7 @@ function newRandomPiece() {
 	//continue on with the game
 function nextFrame() {
 		//set the time-out for the next frame
-	nextFrameTimeout = setTimeout( nextFrame, speed + 50 );
+	nextFrameTimeout = setTimeout( nextFrame, Math.max((10-speed)*30), 50);
 		//drop by one if possible
 	falling = moveByOne(1,0);
 		//and if not move to next piece
@@ -93,7 +92,7 @@ function writePiece() {
 		//loop through the boxes that make up the piece
 	for ( i = 0; i < fallingPiecePos.length; i++ ) {
 			//and write the positions into "board" for rendering
-		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece; 
+		board[ fallingPiecePos[i].y ][ fallingPiecePos[i].x ] = fallingPiece;
 	}
 }
 	//check if new piece position is valid
@@ -110,7 +109,7 @@ function validMove(copy) {
 	fallingPiecePos = copy;
 		//keep the piece falling
 	falling = true;
-}	
+}
 	//move piece by one space
 function moveByOne(y,x) {
 		//obtain a copy of the object which represents "fallingPiece" shape and position
@@ -133,7 +132,7 @@ function moveByOne(y,x) {
 		//tell program if piece was moved
 	return (fallingPiecePos == copy);
 }
-	//create a list of the lines which may have been completed 
+	//create a list of the lines which may have been completed
 function makeList() {
 		//make a new empty array (in case you don't know JavaScript and are reading this anyway)
 	var list = [];
@@ -197,7 +196,7 @@ function dropLinesByOne( startingPoint ) {
 			board[i-1][j] = 0;
 		}
 	}
-		//re-render board 
+		//re-render board
 	render();
 }
 	//rotate piece clockwise
@@ -285,16 +284,17 @@ function rotate() {
 		return false;
 	}
 }
-
+// score =
 function addToLines() {
 	lines++;
 	if ( lines % 10 == 0 ) {
 		levelUp();
 	}
+	document.getElementById('score').innerHTML = lines;
 }
 
 function levelUp() {
 	level++;
-	//alert( level );
 	speed = (speed / 10) * 9;
+	document.getElementById('level').innerHTML = level;
 }

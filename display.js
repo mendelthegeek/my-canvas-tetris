@@ -1,4 +1,4 @@
-//initialize 
+//initialize
 var columns = 10, rows = 20, width = 300, height = 600;
 var cellWidth =  width / columns, cellheight = height / rows;
 var hideBoard = false;
@@ -11,7 +11,7 @@ var board =[];
 function writeBoard() {
 	for ( i = 0; i < rows; i++ ){
 		board[i] = [];
-			for ( j = 0; j < columns; j++ ) {				
+			for ( j = 0; j < columns; j++ ) {
 			board[i][j] = 0;
 		}
 	}
@@ -50,7 +50,7 @@ function render() {
 		}
 	}
 }
-	
+
 setInterval( render, 30 );
 
 function sideDisplay( id, piece ) {

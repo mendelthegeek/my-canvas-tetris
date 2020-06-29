@@ -13,6 +13,40 @@
 
 #holdingPiece {
 	border: 1px solid black;
+	float: right;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.container {
+  display: flex;
+  margin: 0 auto;
+  width: 700px;
+}
+.container > div {
+  flex: 1;
+}
+
+#leftWrapper {
+	float: right;
+}
+
+#controls {
+    margin-top: 25px;
 	float: left;
-	margin-left: 300px;
+	margin-left: 25px;
+	text-align: center;
+}
+
+#keepScore {
+	margin-top: 75px;
+	float: right;
+	text-align: center;
+}
+
+#score, #level {
+	display: inline;
 }
